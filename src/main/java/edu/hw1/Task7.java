@@ -1,14 +1,17 @@
 package edu.hw1;
 
-public class Task7 {
+public final class Task7 {
+    private Task7() {
+
+    }
+
     public static int rotateLeft(int n, int shift) {
         int binaryLength = 0;
         while ((n >> binaryLength) > 0) {
             binaryLength++;
         }
-        shift %= binaryLength;
-        int result = ((n << shift) | (n >> (binaryLength - shift))) & ((1 << binaryLength) - 1);
-        return result;
+        int realShift = shift % binaryLength;
+        return ((n << realShift) | (n >> (binaryLength - realShift))) & ((1 << binaryLength) - 1);
     }
 
     public static int rotateRight(int n, int shift) {
@@ -16,8 +19,7 @@ public class Task7 {
         while ((n >> binaryLength) > 0) {
             binaryLength++;
         }
-        shift %= binaryLength;
-        int result = ((n & ((1 << shift) - 1)) << (binaryLength - shift)) | (n >> shift);
-        return result;
+        int realShift = shift % binaryLength;
+        return ((n & ((1 << realShift) - 1)) << (binaryLength - realShift)) | (n >> realShift);
     }
 }

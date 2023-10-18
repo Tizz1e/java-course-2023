@@ -1,6 +1,9 @@
 package edu.hw1;
 
-public class Task3 {
+public final class Task3 {
+    private Task3() {
+    }
+
     public static boolean isNestable(int[] internalArray, int[] externalArray) {
         int minInternal = Integer.MAX_VALUE;
         int minExternal = Integer.MAX_VALUE;
@@ -16,6 +19,7 @@ public class Task3 {
         }
         return minInternal > minExternal && maxInternal < maxExternal;
     }
+
     public static boolean isNestable(long[] internalArray, long[] externalArray) {
         long minInternal = Integer.MAX_VALUE;
         long minExternal = Integer.MAX_VALUE;

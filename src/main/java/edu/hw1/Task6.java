@@ -1,45 +1,54 @@
 package edu.hw1;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-public class Task6 {
-    public static int countK(int a) {
-        if (a == 6174) {
+
+public final class Task6 {
+    private static final int KAPREKAR = 6174;
+    private static final int NUMBER_LENGTH = 4;
+    private static final int BASE = 10;
+
+    private Task6() {
+
+    }
+
+    public static int countK(int number) throws InvalidParameterException {
+        if (number == KAPREKAR) {
             return 0;
         }
-        if (a / 10000 > 0) {
-            return -1;
+        if (number <= 0 || number / (int) Math.pow(BASE, NUMBER_LENGTH) > 0) {
+            throw new InvalidParameterException("countK takes only  positive number < 10000");
         }
+
         List<Integer> digits = new ArrayList<>();
-        int power = 10000;
-        for (int i = 0; i < 4; ++i) {
-            digits.add(a % power / (power / 10));
-            power /= 10;
+        for (int i = 0; i < NUMBER_LENGTH; i++) {
+            digits.add(number % (int) Math.pow(BASE, i + 1) / (int) Math.pow(BASE, i));
         }
-        int countEqualPairs = 0;
-        for (int i = 0; i < 3; i++) {
-            if (digits.get(i) == digits.get(i + 1)) {
-                countEqualPairs++;
+
+        boolean allEquals = true;
+        for (int i = 1; i < NUMBER_LENGTH; i++) {
+            if (digits.get(i - 1) != digits.get(i)) {
+                allEquals = false;
+                break;
             }
         }
-        if (countEqualPairs == 3) {
-            return -1;
+        if (allEquals) {
+            throw new InvalidParameterException("countK does not works with single digit numbers");
         }
-        Collections.sort(digits);
-        power = 1000;
-        int min = 0;
+
+        digits.sort(Integer::compareTo);
+
         int max = 0;
-        for (int i = 0; i < 4; i++) {
-            min += digits.get(i) * power;
-            power /= 10;
+        int min = 0;
+
+        for (int i = 0; i < digits.size(); i++) {
+            max += digits.get(i) * (int) Math.pow(BASE, i);
+            min += digits.get(i) * (int) Math.pow(BASE, NUMBER_LENGTH - 1 - i);
         }
-        power = 1000;
-        for (int i = 3; i >= 0; i--) {
-            max += digits.get(i) * power;
-            power /= 10;
-        }
+
         return 1 + countK(max - min);
+
     }
+
 }

@@ -1,6 +1,10 @@
 package edu.hw1;
 
-public class Task4 {
+public final class Task4 {
+    private Task4() {
+
+    }
+
     public static String fixString(String input) {
         int n = input.length();
         char[] correctOrder = new char[n];
