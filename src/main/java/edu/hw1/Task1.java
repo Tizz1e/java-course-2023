@@ -7,21 +7,20 @@ public class Task1 {
 
     }
 
-    public static int minutesToSeconds(String time) {
-        int separatorIndex = time.indexOf(':');
-        if (separatorIndex == -1) {
+    public static int minutesToSeconds(String time) throws IllegalArgumentException {
+        String[] splitTime = time.split(":");
+        if (splitTime.length != 2) {
             return -1;
         }
-        String stringMinutes = time.substring(0, separatorIndex);
-        String stringSeconds = time.substring(separatorIndex + 1);
-        if (stringSeconds.length() != 2 || stringMinutes.isEmpty()) {
+        try {
+            int minutes = Integer.parseInt(splitTime[0]);
+            int seconds = Integer.parseInt(splitTime[1]);
+            if (minutes < 0 || seconds < 0 || seconds >= 60) {
+                return -1;
+            }
+            return SECONDS_PER_MINUTE * minutes + seconds;
+        } catch (NumberFormatException e) {
             return -1;
         }
-        int second = Integer.parseInt(stringSeconds);
-        int minutes = Integer.parseInt(stringMinutes);
-        if (second >= SECONDS_PER_MINUTE || minutes < 0) {
-            return -1;
-        }
-        return SECONDS_PER_MINUTE * minutes + second;
     }
 }

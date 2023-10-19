@@ -16,7 +16,7 @@ public final class Task5 {
     }
 
     public static boolean isPalindromeDescendant(long number) {
-        String num = Long.valueOf(number).toString();
+        String num = String.valueOf(number);
         if (isPalindromic(num)) {
             return true;
         }
