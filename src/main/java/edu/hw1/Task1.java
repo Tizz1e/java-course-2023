@@ -15,7 +15,7 @@ public class Task1 {
         try {
             int minutes = Integer.parseInt(splitTime[0]);
             int seconds = Integer.parseInt(splitTime[1]);
-            if (minutes < 0 || seconds < 0 || seconds >= 60) {
+            if (minutes < 0 || seconds < 0 || seconds >= SECONDS_PER_MINUTE) {
                 return -1;
             }
             return SECONDS_PER_MINUTE * minutes + seconds;
