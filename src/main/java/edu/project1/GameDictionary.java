@@ -19,7 +19,7 @@ public class GameDictionary implements Dictionary {
 
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(
-                new FileInputStream("src/main/java/edu/project1/GameDictionary.java"),
+                new FileInputStream("src/main/java/edu/project1/gameDictionary.txt"),
                 StandardCharsets.UTF_8
             )
         )) {
