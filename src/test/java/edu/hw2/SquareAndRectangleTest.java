@@ -20,8 +20,8 @@ public class SquareAndRectangleTest {
     @MethodSource("rectangles")
     @DisplayName("Square and Rectangle #1")
     void first(Rectangle rect) {
-        rect.setWidth(20);
-        rect.setHeight(10);
+        rect = rect.setWidth(20);
+        rect = rect.setHeight(10);
         assertThat(rect.area()).isEqualTo(200.0);
     }
 
@@ -29,10 +29,10 @@ public class SquareAndRectangleTest {
     @MethodSource("rectangles")
     @DisplayName("Square and Rectangle #2")
     void second(Rectangle rect) {
-        rect.setWidth(20);
-        rect.setHeight(20);
+        rect = rect.setWidth(20);
+        rect = rect.setHeight(20);
         assertThat(rect.area()).isEqualTo(400.0);
-        rect.setHeight(10);
+        rect = rect.setHeight(10);
         assertThat(rect.area()).isEqualTo(200.0);
     }
 }

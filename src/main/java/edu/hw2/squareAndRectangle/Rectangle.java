@@ -1,15 +1,25 @@
 package edu.hw2.squareAndRectangle;
 
 public class Rectangle {
-    private double width;
-    private double height;
+    protected final double width;
+    protected final double height;
 
-    public void setWidth(int width) {
-        this.width = width;
+    public Rectangle() {
+        width = 0;
+        height = 0;
     }
 
-    public void setHeight(int height) {
+    public Rectangle(double width, double height) {
+        this.width = width;
         this.height = height;
+    }
+
+    public Rectangle setWidth(int width) {
+        return new Rectangle(width, height);
+    }
+
+    public Rectangle setHeight(int height) {
+        return new Rectangle(width, height);
     }
 
     public double area() {
