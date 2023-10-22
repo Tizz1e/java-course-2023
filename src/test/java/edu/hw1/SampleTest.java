@@ -2,6 +2,9 @@ package edu.hw1;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SampleTest {
@@ -20,13 +23,20 @@ public class SampleTest {
             .hasSize(2);
     }
 
-    @Test
+    static Arguments[] times() {
+        return new Arguments[] {
+            Arguments.of("01:00", 60),
+            Arguments.of("13:56", 836),
+            Arguments.of("10:60", -1),
+            Arguments.of("-10:50", -1)
+        };
+    }
+
     @DisplayName("Длина видео в секундах")
-    void minutesToSecondsTest() {
-        assertThat(Task1.minutesToSeconds("01:00")).isEqualTo(60);
-        assertThat(Task1.minutesToSeconds("13:56")).isEqualTo(836);
-        assertThat(Task1.minutesToSeconds("10:60")).isEqualTo(-1);
-        assertThat(Task1.minutesToSeconds("-10:50")).isEqualTo(-1);
+    @ParameterizedTest(name = "{index}: {0} => {1}")
+    @MethodSource("times")
+    void minutesToSecondsTest(String time, int answer) {
+        assertThat(Task1.minutesToSeconds(time)).isEqualTo(answer);
     }
 
     @Test
