@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameDictionary implements Dictionary {
-    private final ArrayList<String> words;
+    private final List<String> words;
 
     private final Random random;
 
@@ -19,7 +20,7 @@ public class GameDictionary implements Dictionary {
 
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(
-                new FileInputStream("src/main/java/edu/project1/gameDictionary.txt"),
+                new FileInputStream("src/main/resources/gameDictionary.txt"),
                 StandardCharsets.UTF_8
             )
         )) {
