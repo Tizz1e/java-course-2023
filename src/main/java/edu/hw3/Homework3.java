@@ -76,8 +76,11 @@ public class Homework3 {
                 } else if (o2 == null) {
                     return -1;
                 }
-                String ob1 = o1.split(" ")[1];
-                String ob2 = o2.split(" ")[1];
+                String[] tmp = o1.split(" ");
+                String ob1 = tmp[tmp.length - 1];
+
+                tmp = o2.split(" ");
+                String ob2 = tmp[tmp.length - 1];
                 if (sortKey.equals("ASC")) {
                     return ob1.compareTo(ob2);
                 } else {

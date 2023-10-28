@@ -27,14 +27,4 @@ public class BackwardIterator<T> implements Iterator<T> {
         }
         return collection.get(cursor);
     }
-
-    @Override
-    public void remove() {
-        Iterator.super.remove();
-    }
-
-    @Override
-    public void forEachRemaining(Consumer<? super T> action) {
-        Iterator.super.forEachRemaining(action);
-    }
 }
