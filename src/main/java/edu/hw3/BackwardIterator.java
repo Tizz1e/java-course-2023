@@ -3,7 +3,6 @@ package edu.hw3;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
 
 public class BackwardIterator<T> implements Iterator<T> {
     private final List<T> collection;
