@@ -77,6 +77,9 @@ public class MazeSolver implements Solver {
             for (Coordinate move : neighbor) {
                 int newRow = currentCoordinate.row() + move.row();
                 int newCol = currentCoordinate.col() + move.col();
+                if (newRow < 0 || newRow >= maze.height() || newCol < 0 || newCol >= maze.width()) {
+                    continue;
+                }
                 if (dp[newRow][newCol] == dp[currentCoordinate.row()][currentCoordinate.col()] - 1) {
                     currentCoordinate = new Coordinate(newRow, newCol);
                     path.add(currentCoordinate);
