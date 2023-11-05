@@ -16,11 +16,14 @@ public class MazeSolver implements Solver {
         ));
     }
 
+    private boolean inMaze(Maze maze, int y, int x) {
+        return y >= 0 && y < maze.height() && x >= 0 && x < maze.width();
+    }
+
     private void dfs(Coordinate v, Coordinate parent, Maze maze, int[][] dp, boolean[][] isVisited) {
         int row = v.row();
         int col = v.col();
-        if (row < 0 || row >= maze.height()
-            || col < 0 || col >= maze.width()
+        if (!inMaze(maze, row, col)
             || isVisited[row][col] || maze.grid()[row][col].type().equals(Cell.Type.WALL)) {
             return;
         }
@@ -77,10 +80,8 @@ public class MazeSolver implements Solver {
             for (Coordinate move : neighbor) {
                 int newRow = currentCoordinate.row() + move.row();
                 int newCol = currentCoordinate.col() + move.col();
-                if (newRow < 0 || newRow >= maze.height() || newCol < 0 || newCol >= maze.width()) {
-                    continue;
-                }
-                if (dp[newRow][newCol] == dp[currentCoordinate.row()][currentCoordinate.col()] - 1) {
+                if (inMaze(maze, newRow, newCol)
+                    && dp[newRow][newCol] == dp[currentCoordinate.row()][currentCoordinate.col()] - 1) {
                     currentCoordinate = new Coordinate(newRow, newCol);
                     path.add(currentCoordinate);
                     break;
