@@ -1,5 +1,7 @@
 package edu.hw4;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +75,8 @@ public class AnimalHandler {
                     Collectors.counting()
                 )
             );
-        Long maleStat = stat.getOrDefault(Animal.Sex.M, 0L);
-        if (maleStat >= stat.size() - maleStat) {
+
+        if (stat.get(Animal.Sex.M) >= stat.get(Animal.Sex.F)) {
             return Animal.Sex.M;
         }
         return Animal.Sex.F;
@@ -108,11 +110,8 @@ public class AnimalHandler {
 
     public static Integer summaryPaws(List<Animal> animals) {
         return animals.stream()
-            .map(Animal::paws)
-            .reduce(
-                0,
-                Integer::sum
-            );
+            .mapToInt(Animal::paws)
+            .sum();
     }
 
     public static List<Animal> ageNotEqualsPawsAnimals(List<Animal> animals) {
@@ -142,7 +141,7 @@ public class AnimalHandler {
 
     public static Boolean dogHigherThanK(List<Animal> animals, int k) {
         return animals.stream()
-            .anyMatch(animal -> animal.type() == Animal.Type.DOG && animal.height() > k);
+            .anyMatch(animal -> animal.type().equals(Animal.Type.DOG) && animal.height() > k);
     }
 
     public static Map<Animal.Type, Integer> summarySpeciesWeightInAgeRange(List<Animal> animals, int k, int l) {
@@ -195,11 +194,8 @@ public class AnimalHandler {
     }
 
     public static Animal heaviestFish(List<Animal>... animals) {
-        Stream<Animal> resultStream = Stream.empty();
-        for (List<Animal> list : animals) {
-            resultStream = Stream.concat(resultStream, list.stream());
-        }
-        return resultStream
+        return Arrays.stream(animals)
+            .flatMap(Collection::stream)
             .filter(animal -> animal.type() == Animal.Type.FISH)
             .max(Comparator.comparingInt(Animal::weight)).get();
     }
