@@ -119,17 +119,17 @@ public class Homework {
 
         for (char c : check.toCharArray()) {
             builder.append(c);
-            builder.append("*");
+            builder.append(".*");
         }
         builder.setLength(builder.length() - 1);
 
         return Pattern.compile(builder.toString()).matcher(string).find();
     }
 
-    boolean[] binaryCodeValidation(String code) {
+    public static boolean[] binaryCodeValidation(String code) {
         boolean[] result = new boolean[3];
         String pattern1 = "^(0|1)(0|1)0.*";
-        String pattern2 = "^0*0$|^1*1$";
+        String pattern2 = "^0(.*0)?$|^1(.*1)?$";
         String pattern3 = "^[01]{1,3}$";
         result[0] = Pattern.compile(pattern1).matcher(code).find();
         result[1] = Pattern.compile(pattern2).matcher(code).find();
@@ -137,7 +137,7 @@ public class Homework {
         return result;
     }
 
-    boolean[] binaryCodeValidationBonus(String code) {
+    public static boolean[] binaryCodeValidationBonus(String code) {
         boolean[] result = new boolean[7];
 
         List<String> patterns = List.of(
