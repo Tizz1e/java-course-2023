@@ -1,28 +1,25 @@
 package edu.hw5;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("MagicNumber")
 public class Homework {
+    private Homework() {
+    }
+
     public static Duration averageTime(List<String> data) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         List<Duration> durations = new ArrayList<>();
         for (String line : data) {
             String[] range = line.split(" - ");
@@ -78,35 +75,29 @@ public class Homework {
         Matcher matcher3 = Pattern.compile("(\\d+) days? ago").matcher(string);
         LocalDate today = LocalDate.now();
 
-        LocalDate answer = null;
-
         if (matcher1.find()) {
             int year = Integer.parseInt(matcher1.group(1));
             int month = Integer.parseInt(matcher1.group(2));
             int day = Integer.parseInt(matcher1.group(3));
-            answer = LocalDate.of(year, month, day);
-
+            return Optional.of(LocalDate.of(year, month, day));
         } else if (matcher2.find()) {
             String tmpYear = matcher2.group(3);
             int year = Integer.parseInt(tmpYear);
             year += tmpYear.length() == 2 ? today.getYear() / 100 * 100 : 0;
             int month = Integer.parseInt(matcher2.group(2));
             int day = Integer.parseInt(matcher2.group(1));
-            answer = LocalDate.of(year, month, day);
-
+            return Optional.of(LocalDate.of(year, month, day));
         } else if (matcher3.find()) {
             int days = Integer.parseInt(matcher3.group(1));
-            answer = today.minusDays(days);
+            return Optional.of(today.minusDays(days));
 
-        } else {
-            switch (string.toLowerCase(Locale.ROOT)) {
-                case "today" -> answer = today;
-                case "tomorrow" -> answer = today.plusDays(1);
-                case "yesterday" -> answer = today.minusDays(1);
-            }
         }
-
-        return Optional.of(answer);
+        return switch (string.toLowerCase(Locale.ROOT)) {
+            case "today" -> Optional.of(today);
+            case "tomorrow" -> Optional.of(today.plusDays(1));
+            case "yesterday" -> Optional.of(today.minusDays(1));
+            default -> Optional.empty();
+        };
     }
 
     public static boolean validatePassword(String password) {
@@ -160,12 +151,9 @@ public class Homework {
         );
 
         for (int i = 0; i < 7; i++) {
-          result[i] = Pattern.compile(patterns.get(i)).matcher(code).find();
+            result[i] = Pattern.compile(patterns.get(i)).matcher(code).find();
         }
 
         return result;
-    }
-
-    public static void main(String[] args) {
     }
 }
