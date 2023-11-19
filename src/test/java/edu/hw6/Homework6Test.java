@@ -19,7 +19,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Homework6Test {
     @DisplayName("Disk Map")
@@ -91,7 +93,7 @@ public class Homework6Test {
             entries.forEach(e -> result.add(e.getFileName().toString()));
         }
 
-        assertEquals(answer, result);
+        assertTrue(answer.size() == result.size() && answer.containsAll(result));
     }
 
     @DisplayName("NestedDollWriterTest")
