@@ -15,7 +15,7 @@ public class LogAnalyzerTest {
         PrintStream prevConsole = System.out;
         ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
         System.setOut(new PrintStream(newConsole));
-        LogAnalyzer.main("--path **/main/**/logs.txt --format adoc".split(" "));
+        LogAnalyzer.main("--path src/main/resources/logs/logs.txt --format adoc".split(" "));
         System.setOut(prevConsole);
         Pattern pattern = Pattern.compile("averageSize \\| (659509)");
         Matcher matcher = pattern.matcher(newConsole.toString());
