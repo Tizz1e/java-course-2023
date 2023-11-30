@@ -4,6 +4,8 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
@@ -20,11 +22,14 @@ public class Homework {
     }
 
     public static Duration averageTime(List<String> data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd, HH:mm");
         List<Duration> durations = new ArrayList<>();
         for (String line : data) {
             String[] range = line.split(" - ");
-            LocalDateTime begin = LocalDateTime.parse(range[0].replace(", ", "T"));
-            LocalDateTime end = LocalDateTime.parse(range[1].replace(", ", "T"));
+
+            LocalDateTime begin = LocalDateTime.parse(range[0], formatter);
+            LocalDateTime end = LocalDateTime.parse(range[1], formatter);
+
             durations.add(Duration.between(begin, end));
         }
         Duration summary = durations.stream()
@@ -70,28 +75,23 @@ public class Homework {
     }
 
     public static Optional<LocalDate> parseDate(String string) {
-        Matcher matcher1 = Pattern.compile("(\\d{4})-(\\d+)-(\\d+)").matcher(string);
-        Matcher matcher2 = Pattern.compile("(\\d+)/(\\d+)/(\\d{2,})").matcher(string);
-        Matcher matcher3 = Pattern.compile("(\\d+) days? ago").matcher(string);
-        LocalDate today = LocalDate.now();
-
-        if (matcher1.find()) {
-            int year = Integer.parseInt(matcher1.group(1));
-            int month = Integer.parseInt(matcher1.group(2));
-            int day = Integer.parseInt(matcher1.group(3));
-            return Optional.of(LocalDate.of(year, month, day));
-        } else if (matcher2.find()) {
-            String tmpYear = matcher2.group(3);
-            int year = Integer.parseInt(tmpYear);
-            year += tmpYear.length() == 2 ? today.getYear() / 100 * 100 : 0;
-            int month = Integer.parseInt(matcher2.group(2));
-            int day = Integer.parseInt(matcher2.group(1));
-            return Optional.of(LocalDate.of(year, month, day));
-        } else if (matcher3.find()) {
-            int days = Integer.parseInt(matcher3.group(1));
-            return Optional.of(today.minusDays(days));
-
+        List<DateTimeFormatter> formatters = List.of(
+            DateTimeFormatter.ofPattern("yyyy-MM-d"),
+            DateTimeFormatter.ofPattern("d/M/[uuuu][uu]")
+        );
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                return Optional.of(LocalDate.parse(string, formatter));
+            } catch (DateTimeParseException ignored) {
+            }
         }
+
+        LocalDate today = LocalDate.now();
+        Matcher matcher = Pattern.compile("(\\d+) days? ago").matcher(string);
+        if (matcher.find()) {
+            return Optional.of(today.minusDays(Long.parseLong(matcher.group(1))));
+        }
+
         return switch (string.toLowerCase(Locale.ROOT)) {
             case "today" -> Optional.of(today);
             case "tomorrow" -> Optional.of(today.plusDays(1));
